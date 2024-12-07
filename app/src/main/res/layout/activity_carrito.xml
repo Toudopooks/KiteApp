@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCart"
@@ -10,17 +11,44 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/buttonEmptyCart"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Comprar" />
+        android:layout_weight="300"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/preciototal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="5dp"
+        android:text="Kite"
+        android:textSize="24sp"
+        android:textColor="#FF0000"
+        android:gravity="right"/>
 
     <Button
-        android:id="@+id/buttonHistorial"
+        android:id="@+id/comprar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonEmptyCart"
-        android:text="Ver historial de Ordenes" />
+        android:text="Comprar"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/btnBorrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_below="@id/comprar"
+        android:text="Limpiar Carrito" />
+
+
+
 
 </LinearLayout>

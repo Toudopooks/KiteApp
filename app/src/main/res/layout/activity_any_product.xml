@@ -1,0 +1,95 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/scrolview"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:id="@+id/imgg"/>
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:text="Titulo"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/ingredientes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Ingredientes: "
+                android:textSize="20dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="80dp"
+                    android:id="@+id/precio"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Precio: "/>
+                <TextView
+                    android:id="@+id/cantidadtxt"
+                    android:layout_marginTop="80dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Cantidad: "
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="80dp"/>
+                <EditText
+                    android:id="@+id/cantidad"
+                    android:layout_marginTop="70dp"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_alignParentEnd="true"
+                    android:inputType="number"
+                    android:text="1"
+                    android:hint="Enter number"
+                    android:maxLines="1"
+                    android:importantForAccessibility="yes"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/miauButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agregar al carrito"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#FF0000"
+        android:textColor="@color/white"
+        android:layout_below="@id/scrolview"/>
+
+</LinearLayout>

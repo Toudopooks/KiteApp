@@ -2,5 +2,5 @@
     <string name="app_name">KiteApp</string>
     <string name="complete_fields">Por favor, completa los campos.</string>
     <string name="product_added">Producto agregado al carrito.</string>
-
+    <string name="client_id">96230083282-dof5hk76vsvqnkggm6mta8au7039g5lk.apps.googleusercontent.com</string>
 </resources>

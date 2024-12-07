@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.KiteApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Set the primary color to red -->
+        <item name="colorPrimary">#FF0000</item>
+        <item name="colorPrimaryVariant">#FF8585</item>
+        <item name="colorOnPrimary">#FF0000</item>
     </style>
 
     <style name="Theme.KiteApp" parent="Base.Theme.KiteApp" />
