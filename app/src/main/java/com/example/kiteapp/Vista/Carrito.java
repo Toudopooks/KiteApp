@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.kiteapp.Modelo.carritoItem;
 import com.example.kiteapp.R;
+
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,7 @@ public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartU
     private carritoAdapter cartAdapter;
     private dbManager dbManager;
     Button btnClearCart, comprar;
-    TextView preciototal;
+    TextView preciototal,textNoProduct;
 
     private MqttClient mqttClient;
     private ProgressBar progressBar;  // Declare the ProgressBar
@@ -72,7 +74,7 @@ public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrito);
-
+        textNoProduct = findViewById(R.id.textNoProducts);
         recyclerViewCart = findViewById(R.id.recyclerViewCart);
         preciototal = findViewById(R.id.preciototal);
         dbManager = new dbManager(this);
@@ -94,9 +96,10 @@ public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartU
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
         if (cartItems == null || cartItems.isEmpty()) {
+            textNoProduct.setVisibility(View.VISIBLE);
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
             cartItems = new ArrayList<>();
-        }
+        }else {textNoProduct.setVisibility(View.GONE);}
 
         cartAdapter = new carritoAdapter(this, cartItems, this);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
@@ -117,6 +120,7 @@ public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartU
             finalCartItems.clear(); // Limpia la lista local
             cartAdapter.notifyDataSetChanged(); // Actualiza el RecyclerView
             Toast.makeText(this, "El carrito ha sido vaciado", Toast.LENGTH_SHORT).show();
+            textNoProduct.setVisibility(View.VISIBLE);
 
             preciototal.setText("Total: $ 0.0");
         });
@@ -187,6 +191,7 @@ public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartU
                         finalCartItems.clear(); // Clear the local list
                         cartAdapter.notifyDataSetChanged(); // Refresh the RecyclerView
                         preciototal.setText("Total: $ 0.0");
+                        textNoProduct.setVisibility(View.VISIBLE);
                     });
                 }
             } catch (MqttException e) {

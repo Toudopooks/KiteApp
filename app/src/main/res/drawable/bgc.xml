@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo de color o con diseño -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#F5F5F5" /> <!-- Color de fondo -->
+            <corners android:radius="16dp" /> <!-- Bordes redondeados -->
+        </shape>
+    </item>
+
+    <!-- Mensaje de texto -->
+    <item>
+        <bitmap
+            android:gravity="center"/> <!-- Icono opcional -->
+    </item>
+    <item>
+        <text
+            android:gravity="center"
+            android:text="No hay productos en el carrito"
+            android:textColor="#FF0000"
+            android:textSize="18sp"
+            android:typeface="sans" />
+    </item>
+</layer-list>
