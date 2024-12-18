@@ -20,10 +20,16 @@ public class carritoAdapter extends RecyclerView.Adapter<carritoAdapter.CartView
 
     private List<carritoItem> cartItems;
     private Context context;
+    private OnCartUpdatedListener cartUpdatedListener;
 
-    public carritoAdapter(Context context, List<carritoItem> cartItems) {
+    public interface OnCartUpdatedListener {
+        void onCartUpdated();
+    }
+
+    public carritoAdapter(Context context, List<carritoItem> cartItems, OnCartUpdatedListener cartUpdatedListener) {
         this.context = context;
         this.cartItems = cartItems;
+        this.cartUpdatedListener = cartUpdatedListener;
     }
 
     @NonNull
@@ -36,6 +42,9 @@ public class carritoAdapter extends RecyclerView.Adapter<carritoAdapter.CartView
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         carritoItem producto = cartItems.get(position);
+        holder.textNombre.setText(producto.getNombre());
+        holder.textCantidad.setText(producto.getCantidad());
+        holder.textPrecio.setText("$" + producto.getPrecio());
 
         if (producto == null) {
             throw new NullPointerException("El producto es nulo en la posición: " + position);
@@ -67,6 +76,9 @@ public class carritoAdapter extends RecyclerView.Adapter<carritoAdapter.CartView
             cartItems.remove(position); // Remove from the list
             notifyItemRemoved(position); // Update RecyclerView
             notifyItemRangeChanged(position, cartItems.size());
+            if (cartUpdatedListener != null) {
+                cartUpdatedListener.onCartUpdated(); // Notify the activity
+            }
         });
 
         String link= producto.getUrl();

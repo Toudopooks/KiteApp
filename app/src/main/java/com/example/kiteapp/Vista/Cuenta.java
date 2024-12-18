@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.kiteapp.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -86,7 +88,11 @@ public class Cuenta extends AppCompatActivity {
 
     private void logout() {
         auth.signOut();
-        redirectToLogin();
+        GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                .addOnCompleteListener(this, task -> {
+                    // Redirect to login after clearing the account
+                    redirectToLogin();
+                });
     }
 
     private void redirectToLogin() {

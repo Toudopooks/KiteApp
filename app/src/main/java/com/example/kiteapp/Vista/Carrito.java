@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ProgressBar;
 
-public class Carrito extends AppCompatActivity {
+public class Carrito extends AppCompatActivity implements carritoAdapter.OnCartUpdatedListener {
 
     private RecyclerView recyclerViewCart;
     private carritoAdapter cartAdapter;
@@ -37,7 +37,9 @@ public class Carrito extends AppCompatActivity {
             try {
                 // Convertir el precio de String a double
                 double precio = Double.parseDouble(item.getPrecio());
-                total += precio;
+                double cantidad = Double.parseDouble(item.getCantidad());
+                double si=precio*cantidad;
+                total += si;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 // Manejar errores de conversión
@@ -71,6 +73,17 @@ public class Carrito extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrito);
 
+        recyclerViewCart = findViewById(R.id.recyclerViewCart);
+        preciototal = findViewById(R.id.preciototal);
+        dbManager = new dbManager(this);
+
+        ArrayList<carritoItem> cartItems = dbManager.getCartItems();
+        cartAdapter = new carritoAdapter(this, cartItems, this);
+        recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewCart.setAdapter(cartAdapter);
+
+        updateTotalPrice();
+
         // Initialize UI elements
         recyclerViewCart = findViewById(R.id.recyclerViewCart);
         btnClearCart = findViewById(R.id.btnBorrar);
@@ -79,34 +92,34 @@ public class Carrito extends AppCompatActivity {
 
         dbManager = new dbManager(this);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
-        ArrayList<carritoItem> cartItems = dbManager.getCartItems();
 
         if (cartItems == null || cartItems.isEmpty()) {
             Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
             cartItems = new ArrayList<>();
         }
 
-        cartAdapter = new carritoAdapter(this, cartItems);
+        cartAdapter = new carritoAdapter(this, cartItems, this);
+        recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewCart.setAdapter(cartAdapter);
-
+        updateTotalPrice();
         // Clear Cart functionality
-        ArrayList<carritoItem> finalCartItems = cartItems;
-        btnClearCart.setOnClickListener(v -> {
-            dbManager.clearCart(); // Llamada al método para borrar toda la tabla
-            finalCartItems.clear(); // Limpia la lista local
-            cartAdapter.notifyDataSetChanged(); // Actualiza el RecyclerView
-            Toast.makeText(this, "El carrito ha sido vaciado", Toast.LENGTH_SHORT).show();
-        });
+
 
         preciototal = findViewById(R.id.preciototal);
         String precioTotalString = calculatePrecioTotal(cartItems);
         String productosPh = productosPH(cartItems);
 
 
-
-        // Mostrar el precio total en el TextView
         preciototal.setText("Total: $ " + precioTotalString);
+        ArrayList<carritoItem> finalCartItems = cartItems;
+        btnClearCart.setOnClickListener(v -> {
+            dbManager.clearCart(); // Llamada al método para borrar toda la tabla
+            finalCartItems.clear(); // Limpia la lista local
+            cartAdapter.notifyDataSetChanged(); // Actualiza el RecyclerView
+            Toast.makeText(this, "El carrito ha sido vaciado", Toast.LENGTH_SHORT).show();
 
+            preciototal.setText("Total: $ 0.0");
+        });
         comprar.setOnClickListener(v -> {
             sendMessage("Compra realizada",finalCartItems,productosPh,precioTotalString);; // Enviar un mensaje indicando que se realizó una compra
 
@@ -132,7 +145,18 @@ public class Carrito extends AppCompatActivity {
         }
     }
 
-    // Send a message via MQTT
+    @Override
+    public void onCartUpdated() {
+        updateTotalPrice();
+    }
+
+    private void updateTotalPrice() {
+        ArrayList<carritoItem> cartItems = dbManager.getCartItems();
+        String updatedTotal = calculatePrecioTotal(cartItems);
+        preciototal.setText("Total: $ " + updatedTotal);
+    }
+
+
     private void sendMessage(String messageContent, ArrayList<carritoItem> finalCartItems,String productosPh,String precioTotalString) {
         // Show the ProgressBar
         runOnUiThread(() -> progressBar.setVisibility(ProgressBar.VISIBLE));
@@ -162,6 +186,7 @@ public class Carrito extends AppCompatActivity {
                         dbManager.clearCart(); // Clear cart data in the database
                         finalCartItems.clear(); // Clear the local list
                         cartAdapter.notifyDataSetChanged(); // Refresh the RecyclerView
+                        preciototal.setText("Total: $ 0.0");
                     });
                 }
             } catch (MqttException e) {

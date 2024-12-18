@@ -75,7 +75,7 @@ public class mainPage extends AppCompatActivity {
                         Log.d("mainPage", "Error getting documents: ", task.getException());
                     }
                 });
-        db.collection("comestible")
+        db.collection("eventos")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
